@@ -2702,6 +2702,7 @@ static HLIST_HEAD(clk_debug_list);
 static struct hlist_head *orphan_list[] = {
 	&clk_orphan_list,
 	NULL,
+<<<<<<< HEAD
 };
 
 static void clk_state_subtree(struct clk_core *c)
@@ -2752,6 +2753,8 @@ static const struct file_operations clk_state_fops = {
 	.read		= seq_read,
 	.llseek		= seq_lseek,
 	.release	= single_release,
+=======
+>>>>>>> a0852817cd9d9a69d3abd18508e6936ca03a3b54
 };
 
 static void clk_summary_show_one(struct seq_file *s, struct clk_core *c,

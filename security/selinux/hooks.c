@@ -2229,8 +2229,12 @@ static int selinux_binder_transaction(const struct cred *from,
 static int selinux_binder_transfer_binder(const struct cred *from,
 					  const struct cred *to)
 {
+<<<<<<< HEAD
 	return avc_has_perm(&selinux_state,
 			    cred_sid(from), cred_sid(to),
+=======
+	return avc_has_perm(cred_sid(from), cred_sid(to),
+>>>>>>> a0852817cd9d9a69d3abd18508e6936ca03a3b54
 			    SECCLASS_BINDER, BINDER__TRANSFER,
 			    NULL);
 }
