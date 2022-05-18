@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2019 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2011-2021 The Linux Foundation. All rights reserved.
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
@@ -106,6 +106,7 @@ htt_get_first_packet_after_wow_wakeup(uint32_t *msg_word, qdf_nbuf_t buf)
 			  "%s: First packet after WOW Wakeup rcvd", __func__);
 	}
 }
+
 
 static inline qdf_nbuf_t htt_rx_netbuf_pop(htt_pdev_handle pdev)
 {
