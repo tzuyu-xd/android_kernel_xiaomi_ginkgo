@@ -20,8 +20,8 @@ VERSION=A10
 DEFCONFIG=vendor/ginkgo-perf_defconfig
 
 # Files
-IMAGE=$(pwd)/ginkgo/out/arch/arm64/boot/Image.gz-dtb
-DTBO=$(pwd)/ginkgo/out/arch/arm64/boot/dtbo.img
+IMAGE=/project/ryujin/out/arch/arm64/Image.gz-dtb
+DTBO=/project/ryujin/out/arch/arm64/boot/dtbo.img
 
 # Verbose Build
 VERBOSE=0
@@ -42,7 +42,7 @@ FINAL_ZIP=${ZIPNAME}-${VERSION}-${DEVICE}-Kernel-${TANGGAL}.zip
 # Set environment for telegram
 export chat_id="-1001694668978"
 export token="5398876930:AAHH5brJSf5NG5lzlvh-OaaUulc1GstcJNg"
-
+export out=/project/ryujin/out
 ##----------------------------------------------------------##
 # Specify compiler.
 
@@ -116,7 +116,7 @@ function exports() {
         # Export KBUILD_COMPILER_STRING
         if [ -d ${KERNEL_DIR}/clang ];
            then
-               export KBUILD_COMPILER_STRING=$(${KERNEL_DIR}/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
+               export KBUILD_COMPILER_STRING="$(/project/ryujin/toolchain/clang/bin/clang --version | head -n 1 | perl -pe 's/\((?:http|git).*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//' -e 's/^.*clang/clang/')"
         elif [ -d ${KERNEL_DIR}/gcc64 ];
            then
                export KBUILD_COMPILER_STRING=$("$KERNEL_DIR/gcc64"/bin/aarch64-elf-gcc --version | head -n 1)
@@ -182,7 +182,6 @@ START=$(date +"%s")
 	post_msg "<b>$KBUILD_BUILD_VERSION CI Build Triggered</b>%0A<b>Docker OS: </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Kolkata date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0A<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'>$COMMIT_HEAD</a>"
 	
 	# Compile
-	make O=out CC=clang ARCH=arm64 ${DEFCONFIG}
 	if [ -d ${KERNEL_DIR}/clang ];
 	   then
 		make -j4 O=$out \
@@ -197,9 +196,10 @@ START=$(date +"%s")
 		CLANG_TRIPLE=aarch64-linux-gnu- \
 		CROSS_COMPILE=aarch64-linux-gnu-  \
 		CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+		V=$VERBOSE 2>&1 | tee error.log
 	elif [ -d ${KERNEL_DIR}/gcc64 ];
 	   then
-	       make -j$(nproc --all) O=out \
+	       make -j4$(nproc --all) O=out \
 	       ARCH=arm64 \
 	       CROSS_COMPILE_COMPAT=arm-eabi- \
 	       CROSS_COMPILE=aarch64-elf- \
@@ -212,7 +212,7 @@ START=$(date +"%s")
 	       V=$VERBOSE 2>&1 | tee error.log
 	elif [ -d ${KERNEL_DIR}/aosp-clang ];
 	   then
-           make -j$(nproc --all) O=out \
+           make -j4$(nproc --all) O=out \
 	       ARCH=arm64 \
 	       LLVM=1 \
 	       LLVM_IAS=1 \
