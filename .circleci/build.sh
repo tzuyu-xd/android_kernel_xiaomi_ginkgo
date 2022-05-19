@@ -77,7 +77,7 @@ function cloneTC() {
 	then
 	post_msg " xKernelCompiler Started Proton Clang ToolChain "
 	git clone --depth=1 https://github.com/kdrag0n/proton-clang.git clang
-	PATH="${KERNEL_DIR}/clang/bin:$PATH"
+	PATH="/project/ryujin/clang/bin:$PATH"
 	
 	elif [ $COMPILER = "azure" ];
 	then
@@ -184,7 +184,7 @@ START=$(date +"%s")
 	# Compile
 	if [ -d ${KERNEL_DIR}/clang ];
 	   then
-		make -j4 O=$out \
+		make -j O=$out \
 		ARCH=arm64 \
 		CC="clang" \
 		AR="llvm-ar" \
@@ -199,7 +199,7 @@ START=$(date +"%s")
 		V=$VERBOSE 2>&1 | tee error.log
 	elif [ -d ${KERNEL_DIR}/gcc64 ];
 	   then
-	       make -j4$(nproc --all) O=out \
+	       make -j$(nproc --all) O=out \
 	       ARCH=arm64 \
 	       CROSS_COMPILE_COMPAT=arm-eabi- \
 	       CROSS_COMPILE=aarch64-elf- \
@@ -212,7 +212,7 @@ START=$(date +"%s")
 	       V=$VERBOSE 2>&1 | tee error.log
 	elif [ -d ${KERNEL_DIR}/aosp-clang ];
 	   then
-           make -j4$(nproc --all) O=out \
+           make -j$(nproc --all) O=out \
 	       ARCH=arm64 \
 	       LLVM=1 \
 	       LLVM_IAS=1 \
