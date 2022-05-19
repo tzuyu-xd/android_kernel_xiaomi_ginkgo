@@ -40,7 +40,7 @@ ZIPNAME=FanEdition
 FINAL_ZIP=${ZIPNAME}-${VERSION}-${DEVICE}-Kernel-${TANGGAL}.zip
 
 # Set environment for telegram
-export chat_id="-684225040"
+export chat_id="-1001694668978"
 export token="5398876930:AAHH5brJSf5NG5lzlvh-OaaUulc1GstcJNg"
 
 ##----------------------------------------------------------##
