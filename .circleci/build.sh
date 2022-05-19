@@ -79,7 +79,7 @@ clone() {
 		# Set environment for clang
 		TC_DIR="$KERNEL_DIR/clang"
 		# Get path and compiler string
-		KBUILD_COMPILER_STRING=$("$TC_DIR/bin/clang --version | head -n 1 | perl -pe 's/\((?:http|git).*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//' -e 's/^.*clang/clang/')"
+		KBUILD_COMPILER_STRING="$($TC_DIR/bin/clang --version | head -n 1 | perl -pe 's/\((?:http|git).*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//' -e 's/^.*clang/clang/')"
 		LD_LIBRARY_PATH="$TC_DIR/clang/lib:$LD_LIBRARY_PATH"
         PATH="$TC_DIR/clang/bin:$PATH"
 	elif [[ $COMPILER == "gcc" ]]; then
